@@ -55,8 +55,8 @@ angular
       }
     ]);
   })
-  .constant('FBURL', 'https://amber-heat-9947.firebaseio.com/')
-  .constant('APIKEY', 'MTZhYThmNDhiOTdhNzI2YmUyN2NkYWZk')
+  .constant('FBURL', 'https://hyena-groups.firebaseio.com/')
+  .constant('APIKEY', 'MGE0OWQ2ZjUwMDc4YjU0MzdkNTBiNzA4')
   .constant('APIPATH', 'http://st-studio.unl.edu/hyena_platform/public/api/1.0/')
   .constant('PLATFORM_ROOT', 'http://st-studio.unl.edu/hyena_platform/public/')
   .constant('angularMomentConfig', {

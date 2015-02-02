@@ -10,7 +10,7 @@
     <base href="/">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="images/icons/Icon-60.png">
+    <link rel="icon" type="image/png" href="images/icons/Icon-32.png">
 
     <!-- Win8 Tile Color-->
     <meta name="msapplication-TileColor" content="#D00000">
@@ -46,12 +46,13 @@
     <link rel="import" href="elements/unl-toggle-button/unl-toggle-button.html">
     <link rel="import" href="elements/unl-pages/unl-pages.html">
     <link rel="import" href="elements/unl-tabs/unl-tabs.html">
+    <link rel="import" href="elements/unl-button-group/unl-button-group.html">
     <link rel="import" href="elements/paper-ripple/paper-ripple.html">
     <!-- End UNL Components -->
 
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/unl-style/dist/unl-style.css" />
+    <link rel="stylesheet" href="bower_components/unl-style/dist/unl-style.css" shim-shadowdom/>
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -63,7 +64,7 @@
   <body ng-controller="ApplicationCtrl" ng-show="appLoaded" unresolved>
     <unl-modal id="unl-modal" type="takeover"></unl-modal>
     <!-- Login Modal Content -->
-    <div id="modal-content-login" ng-include src="'views/partials/modal-login.html'" onload="showLoginWindow()"></div>
+    <div id="modal-content-login" hidden ng-include src="'views/partials/modal-login.html'" onload="showLoginWindow()"></div>
     <!-- End Modal Content -->
 
     <!--[if lt IE 7]>

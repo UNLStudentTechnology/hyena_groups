@@ -12,6 +12,7 @@ angular.module('hyenaGroupsApp')
   	//Initialize tab index var
   	$scope.selectedTab = 0;
   	$scope.sortDirection = false;
+  	$scope.sortField = "first_name";
   	//Initialize user addition list for ng-tag-list
   	$scope.usersAddList = [];
   	$scope.selectedUser = null;

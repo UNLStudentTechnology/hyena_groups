@@ -18,12 +18,12 @@ angular.module('hyenaGroupsApp')
     //AUTHENTICATION FLOW
     if(angular.isDefined($location.search().token)) //If this is new log in from CAS
     {
-      $scope.appLoaded = true;
       //Get Query Params
       var authToken = $location.search().token;
       $location.url($location.path()); //Clear query params from address bar
       //Evaluate token from platform
       var tokenUser = AppFirebase.authenticate(authToken).then(function(authData) {
+        $scope.appLoaded = true;
         //Process the user login
         AuthService.manualLogin(authData.uid, authToken, 'groups').then(function(user) {
           $scope.currentUser = user.data;
