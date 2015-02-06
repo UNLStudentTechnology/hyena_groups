@@ -26,8 +26,8 @@
     <!-- endbuild -->
 
     <!-- UNL Components -->
-    <link rel="import" href="elements/unl-header/unl-header.html">
     <link rel="import" href="elements/unl-layout/unl-layout.html">
+    <link rel="import" href="elements/unl-layout-splash/unl-layout-splash.html">
     <link rel="import" href="elements/unl-layout-kiosk/unl-layout-kiosk.html">
     <link rel="import" href="elements/unl-panel/unl-panel.html">
     <link rel="import" href="elements/unl-toolbar/unl-toolbar.html">
@@ -46,13 +46,14 @@
     <link rel="import" href="elements/unl-toggle-button/unl-toggle-button.html">
     <link rel="import" href="elements/unl-pages/unl-pages.html">
     <link rel="import" href="elements/unl-tabs/unl-tabs.html">
+    <link rel="import" href="elements/unl-card/unl-card.html">
     <link rel="import" href="elements/unl-button-group/unl-button-group.html">
     <link rel="import" href="elements/paper-ripple/paper-ripple.html">
     <!-- End UNL Components -->
 
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/unl-style/dist/unl-style.css" shim-shadowdom/>
+    <link rel="stylesheet" href="bower_components/unl-style/dist/unl-style.css" />
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -61,7 +62,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-controller="ApplicationCtrl" ng-show="appLoaded" unresolved>
+  <body ng-controller="ApplicationCtrl" unresolved>
     <unl-modal id="unl-modal" type="takeover"></unl-modal>
     <!-- Login Modal Content -->
     <div id="modal-content-login" hidden ng-include src="'views/partials/modal-login.html'" onload="showLoginWindow()"></div>
@@ -71,7 +72,19 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
+    <!-- Loading Page -->
+    <unl-layout-splash ng-hide="appLoaded">
+        <div heading>
+            <h2>
+                Loading Campus Talk
+                <span class="subhead">Groups</span>
+            </h2>
+        </div>
+        <div left>Student Technology</div>
+        <div center>go.unl.edu/campustalk</div>
+        <div right>University of Nebraska-Lincoln</div>
+    </unl-layout-splash>
+    <!-- Application Layout -->
     <unl-layout>
         <div drawer flex vertical layout>
             <unl-list-group>
@@ -84,18 +97,20 @@
                 <!-- List groups -->
                 <unl-list-item-header><core-icon icon="social:group"></core-icon> My Groups</unl-list-item-header>
                 <unl-list-item-label ng-attr-active="{{group.id==currentGroupId}}" ng-repeat="group in currentUser.groups | orderBy:'title'" heading="{{group.title}}" link>
-                    <a ng-click="go('/group/{{group.id}}', 'animate-slide-left'); closeMainDrawer()"><paper-ripple fit></paper-ripple></a>
+                    <a ng-click="go('/group/{{group.id}}'); closeMainDrawer()"><paper-ripple fit></paper-ripple></a>
                 </unl-list-item-label>
                 <!-- End list groups -->
                 </div>
             </unl-list-group>
+            <footer>
+                
+            </footer>
         </div>
         <div main vertical layout ng-view ng-class="pageAnimationClass">
         </div>
     </unl-layout>
     <unl-toast></unl-toast>
-    <!-- End application content -->
-
+    <!-- End Application Layout -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>

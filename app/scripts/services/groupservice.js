@@ -30,8 +30,8 @@ angular.module('hyenaGroupsApp')
 				APIPATH+'groups/'+groupId+'/users?'+tokenString+'&'+apiString, users);
 		},
 		usersRemove: function usersRemove(groupId, users) {
-			return $http.delete(
-				APIPATH+'groups/'+groupId+'/users?'+tokenString+'&'+apiString, users);
+			return $http.post(
+				APIPATH+'groups/'+groupId+'/users/delete?'+tokenString+'&'+apiString, users);
 		}
   	};
   });

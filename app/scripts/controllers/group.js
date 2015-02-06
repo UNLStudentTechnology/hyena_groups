@@ -15,7 +15,9 @@ angular.module('hyenaGroupsApp')
   	$scope.sortField = "first_name";
   	//Initialize user addition list for ng-tag-list
   	$scope.usersAddList = [];
+  	//Variables for deletion
   	$scope.selectedUser = null;
+  	var deleteKeys = [];
 
   	//Get the requested group by ID
     var groupId = $rootScope.currentGroupId = parseInt($routeParams.groupId);
@@ -42,7 +44,14 @@ angular.module('hyenaGroupsApp')
 		});
 
     	GroupService.usersAdd(groupId, userObject).then(function(response) {
+    		//Clear the tag list
     		$scope.usersAddList = [];
+    		//Loop through new group members and add them to active list
+    		angular.forEach(response.data.users_added, function(value, key) {
+				$scope.members.push(value);
+			});
+			//Show notification
+			Notification.hideModal();
     		Notification.show(response.data.message, 'success');
     	}, function(error) {
     		Notification.show(error.data, 'error');
@@ -55,17 +64,29 @@ angular.module('hyenaGroupsApp')
 
     $scope.removeUsers = function() {
     	var userObject = {users:[]};
-    	userObject.users.push($scope.selectedUser);
-
+    	//Add user_ids to userObject list
+    	for (var i = 0; i < deleteKeys.length; i++) {
+			userObject.users.push(deleteKeys[i][1]);
+		}
+    	
     	GroupService.usersRemove(groupId, userObject).then(function(response) {
+    		//Remove users locally
+    		for (var i = 0; i < deleteKeys.length; i++) {
+    			$scope.members.splice($scope.members.indexOf(deleteKeys[i][0]), 1);
+    		}
+    		deleteKeys = [];
+
+    		//Show notification
+    		Notification.hideModal();
     		Notification.show(response.data.message, 'success');
     	}, function(error) {
     		Notification.show(error.data, 'error');
     	});
     };
 
-    $scope.showRemoveModal = function(userId) {
-    	$scope.selectedUser = userId;
+    $scope.showRemoveModal = function(userObject) {
+    	deleteKeys.push([userObject, userObject.uni_auth]);
+    	$scope.selectedUser = userObject.uni_auth;
     	Notification.showModal('', '#modal-member-remove');
     };
 

@@ -36,8 +36,8 @@ angular.module('hyenaGroupsApp')
     }
     else if(AuthService.check() && AppFirebase.getAuthRef().$getAuth() !== null) //Already authenticated, attempt to get existing session
     {
-      $scope.appLoaded = true;
       AuthService.user('groups').then(function(user) {
+        $scope.appLoaded = true;
         $scope.currentUser = user.data;
       });
     }

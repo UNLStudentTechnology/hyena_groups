@@ -1,5 +1,4 @@
-<unl-toolbar>
-	<unl-drawer-toggle ng-click="toggleMainDrawer()"></unl-drawer-toggle>
+<unl-toolbar tabs>
 	<a ng-click="go('/', 'animate-slide-left')" title="Back to Groups"><unl-icon-button icon="arrow-back"></unl-icon-button></a>
 	<span flex class="align-center">{{group.title || 'Loading'}}</span>
 	<a ng-click="go('/group/{{currentGroupId}}/settings')" title="Settings"><unl-icon-button icon="settings"></unl-icon-button></a>
@@ -15,7 +14,7 @@
 			<label for="member-filter" hidden>Find Someone</label>
 			<div horizontal layout gutters class="margin-bottom">
 				<div flex horizontal layout>
-					<input name="member-filter" ng-model="member_search.$" placeholder="Find someone..." flex>
+					<input name="member-filter" ng-model="member_search.$" placeholder="Find someone..." flex start>
 					<unl-button-group input end>
 						<button type="button" ng-click="toggleSort()"><core-icon icon="swap-vert"></core-icon> {{ sortDirection?'Z-A':'A-Z' }}</button>
 						<select name="userFieldSelect" ng-model="sortField">
@@ -25,16 +24,16 @@
 					</unl-button-group>
 				</div>
 				<div>
-					<button type="button" ng-click="showAddModal()"><core-icon icon="social:group-add"></core-icon></button>
-					<button type="button" ng-csv="members" filename="export_members.csv"><core-icon icon="archive"></core-icon></button>
+					<unl-icon-button ng-click="showAddModal()" icon="social:group-add"></unl-icon-button>
+					<unl-icon-button ng-csv="members" filename="export_members.csv" icon="archive"></unl-icon-button>
 				</div>
 			</div>
 			<unl-empty-content ng-hide="members.length > 0" text="No people yet"></unl-empty-content>
 			<unl-list-group ng-show="members.length > 0">
 				<unl-list-item-header>{{members.length}} Current {{members.length == 1 ? 'Person' : 'People'}}</unl-list-item-header>
-				<unl-list-item-label user user-model="member" class="animate-fade-left" image="{{ member.profile_image }}" heading="{{ member.first_name ? member.first_name +' '+ member.last_name : member }}" label="{{member.uni_year | uni_year}} - {{member.uni_major}}" ng-repeat="member in members | orderBy:sortField:sortDirection | filter:member_search">
+				<unl-list-item-label user user-model="member" class="animate-fade-left" image="{{ member.profile_image }}" heading="{{ member.first_name ? member.first_name +' '+ member.last_name : member }}" label="{{member.uni_year | uni_year}} - {{member.uni_major}}" ng-repeat="(key, member) in members | orderBy:sortField:sortDirection | filter:member_search">
 					<div class="tools show-on-hover">
-						<unl-icon-button ng-hide="member.id === currentUser.id" icon="delete" ng-click="showRemoveModal('{{member.uni_auth}}')"></unl-icon-button>
+						<unl-icon-button ng-hide="member.id === currentUser.id" icon="delete" ng-click="showRemoveModal(member)"></unl-icon-button>
 					</div>
 				</unl-list-item-label>
 			</unl-list-group>
