@@ -16,10 +16,10 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'firebase',
     'angularMoment',
     'hyenaAngular',
     'ngTagsInput',
+    'ngStorage',
     'ngCsv'
   ])
   .config(function ($routeProvider, $locationProvider) {
