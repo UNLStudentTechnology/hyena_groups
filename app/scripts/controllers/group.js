@@ -8,9 +8,10 @@
  * Controller of the hyenaGroupsApp
  */
 angular.module('hyenaGroupsApp')
-  .controller('GroupCtrl', function ($scope, $rootScope, $routeParams, Notification, GroupService) {
+  .controller('GroupCtrl', function ($scope, $rootScope, $routeParams, $http, Notification, GroupService, UserService) {
   	//Initialize tab index var
   	$scope.selectedTab = 0;
+    //Initialize sort variables
   	$scope.sortDirection = false;
   	$scope.sortField = "first_name";
   	//Initialize user addition list for ng-tag-list
@@ -18,13 +19,15 @@ angular.module('hyenaGroupsApp')
   	//Variables for deletion
   	$scope.selectedUser = null;
   	var deleteKeys = [];
+    //CSV Export Headers
+    $scope.csvHeaders = ['Membership Date', 'Email Address', 'First Name', 'Last Name', 'BB Username', 'Major', 'Year', 'College', 'Department'];
 
   	//Get the requested group by ID
     var groupId = $rootScope.currentGroupId = parseInt($routeParams.groupId);
     GroupService.get(groupId, 'users,apps').then(function(response) {
-		$scope.group = response.data;
-		$scope.members = response.data.users;
-		$scope.apps = response.data.apps;
+  		$scope.group = response.data;
+  		$scope.members = response.data.users;
+  		$scope.apps = response.data.apps;
     });
 
     /**
@@ -85,11 +88,11 @@ angular.module('hyenaGroupsApp')
     };
 
     $scope.showRemoveModal = function(userObject) {
+      deleteKeys = [];
     	deleteKeys.push([userObject, userObject.uni_auth]);
     	$scope.selectedUser = userObject.uni_auth;
     	Notification.showModal('', '#modal-member-remove');
     };
-
 
     $scope.splitTags = function(tag) {
     	var tagArray = tag.text.split(',');
@@ -103,5 +106,13 @@ angular.module('hyenaGroupsApp')
 	    	}
 	    	console.log($scope.usersAddList);
 	    }
+    };
+
+    /**
+     * Returns a clean array to be exported to CSV
+     * @return array Array of users
+     */
+    $scope.getExportArray = function() {
+      return UserService.export($scope.members);
     };
   });
