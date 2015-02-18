@@ -16,7 +16,6 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'angularMoment',
     'hyenaAngular',
     'ngTagsInput',
     'ngStorage',
