@@ -1,4 +1,4 @@
-// Generated on 2014-10-24 using generator-angular 0.9.8
+// Generated on 2015-02-16 using generator-hyena 0.10.0
 'use strict';
 
 // # Globbing
@@ -11,7 +11,6 @@ module.exports = function (grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
-  grunt.loadNpmTasks('grunt-vulcanize');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -61,8 +60,7 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.app %>/elements/{,*/}*.{html,css}',
+          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -135,7 +133,7 @@ module.exports = function (grunt) {
       dist: {
         options: {
           open: true,
-          base: '<%= yeoman.dist %>'
+          base: ''
         }
       }
     },
@@ -153,15 +151,6 @@ module.exports = function (grunt) {
                 'app/styles/unl-style.css': 'app/styles/less/main.less'
             }
         }
-    },
-
-    vulcanize: {
-      default: {
-        options: {},
-        files: {
-          'build.html': '<%= yeoman.app %>/index.html'
-        },
-      },
     },
 
     // Make sure code styles are up to par and there are no obvious mistakes
@@ -192,7 +181,7 @@ module.exports = function (grunt) {
           src: [
             '.tmp',
             '<%= yeoman.dist %>/{,*/}*',
-            '!<%= yeoman.dist %>/.git*'
+            '!<%= yeoman.dist %>/.git{,*/}*'
           ]
         }]
       },
@@ -370,18 +359,18 @@ module.exports = function (grunt) {
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
-            'fonts/*',
+            'fonts/{,*/}*.*'
           ]
+        }, {
+          expand: true, 
+          cwd: './bower_components/unl-components',
+          dest: '<%= yeoman.dist %>/elements/unl-components/',
+          src: ['**', '!**/node_modules/**'], 
         }, {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
-        }, {
-          expand: true, 
-          cwd: './',
-          dest: '<%= yeoman.dist %>',
-          src: ['bower_components/unl-components/**', '!**/node_modules/**'], 
         }]
       },
       styles: {
