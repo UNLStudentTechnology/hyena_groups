@@ -8,7 +8,7 @@
  * Controller of the hyenaGroupsApp
  */
 angular.module('hyenaGroupsApp')
-  .controller('GroupCtrl', function ($scope, $rootScope, $routeParams, $http, Notification, GroupService, UserService) {
+  .controller('GroupCtrl', function ($scope, $rootScope, $stateParams, $http, $filter, Notification, GroupService, UserService, AppService) {
   	//Initialize tab index var
   	$scope.selectedTab = 0;
     //Initialize sort variables
@@ -23,11 +23,20 @@ angular.module('hyenaGroupsApp')
     $scope.csvHeaders = ['Membership Date', 'Email Address', 'First Name', 'Last Name', 'BB Username', 'Major', 'Year', 'College', 'Department'];
 
   	//Get the requested group by ID
-    var groupId = $rootScope.currentGroupId = parseInt($routeParams.groupId);
+    var groupId = $rootScope.currentGroupId = parseInt($stateParams.groupId);
     GroupService.get(groupId, 'users,apps').then(function(response) {
   		$scope.group = response.data;
   		$scope.members = response.data.users;
-  		$scope.apps = response.data.apps;
+  		$scope.group_apps = response.data.apps;
+    }, function(error) {
+      Notification.show('Sorry! Unable to load your group.', 'error');
+    });
+
+    //Load apps from the store
+    AppService.all().then(function(response) {
+      $scope.apps = response.data;
+    }, function(error) {
+      Notification.show('Sorry! Unable to load apps from the store.', 'error');
     });
 
     /**
@@ -37,14 +46,51 @@ angular.module('hyenaGroupsApp')
     	$scope.sortDirection = !$scope.sortDirection;
     };
 
+    $scope.toggleGroupApp = function(app) {
+      if($filter('filter')($scope.group_apps, {id:app.id}).length > 0)
+        removeGroupApp(app);
+      else
+        addGroupApp(app);
+    };
+
+    /**
+     * Add app(s) to group
+     */
+    var addGroupApp = function(app) {
+      var apps = {apps:[ app.id ]};
+      GroupService.appsAdd(groupId, apps).then(function(response) {
+        $scope.group_apps.push(app);
+      }, function(error) {
+        if(angular.isDefined(error.data.message))
+          Notification.show(error.data.message, 'error');
+        else
+          Notification.show('Sorry! There was an error.', 'error');
+      });
+    };
+
+    /**
+     * Remove app(s) from group
+     */
+    var removeGroupApp = function(app) {
+      var apps = {apps:[ app.id ]};
+      GroupService.appsRemove(groupId, apps).then(function(response) {
+        //$scope.group_apps.splice(app);
+      }, function(error) {
+        if(angular.isDefined(error.data.message))
+          Notification.show(error.data.message, 'error');
+        else
+          Notification.show('Sorry! There was an error.', 'error');
+      });
+    };
+
     /**
      * Adds new users to an existing group. Shows a notification based on the response.
      */
     $scope.addUsers = function() {
     	var userObject = {users:[]};
     	angular.forEach($scope.usersAddList, function(value, key) {
-			userObject.users.push(value.text);
-		});
+  			userObject.users.push(value.text);
+  		});
 
     	GroupService.usersAdd(groupId, userObject).then(function(response) {
     		//Clear the tag list
@@ -65,6 +111,23 @@ angular.module('hyenaGroupsApp')
     	Notification.showModal('Add new members', '#modal-members-add');
     };
 
+    $scope.updateUser = function(user) {
+      if(angular.isDefined(user)) {
+        GroupService.usersUpdate(groupId, user.uni_auth, user).then(function(response) {
+          Notification.show(response.data.message, 'success');
+        }, function(error) {
+            console.log('Update User Error', error);
+          if(error.message)
+            Notification.show(error.data.message, 'error');
+          else
+            Notification.show('Sorry! There was an error.', 'error');
+        });
+      }
+    };
+
+    /**
+     * Removes users from a group
+     */
     $scope.removeUsers = function() {
     	var userObject = {users:[]};
     	//Add user_ids to userObject list

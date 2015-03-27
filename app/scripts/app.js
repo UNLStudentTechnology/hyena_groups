@@ -13,7 +13,7 @@ angular
     'ngAnimate',
     'ngCookies',
     'ngResource',
-    'ngRoute',
+    'ui.router',
     'ngSanitize',
     'ngTouch',
     'angularMoment',
@@ -22,27 +22,48 @@ angular
     'ngStorage',
     'ngCsv'
   ])
-  .config(function ($routeProvider, $locationProvider) {
-    $routeProvider
-      .when('/', {
+ .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    $stateProvider
+      //Layouts
+      .state('unl-layout', {
+        templateUrl: 'views/layouts/unl-layout.html',
+        data: {
+          requireAuth: true
+        }
+      })
+      .state('unl-layout-kiosk', {
+        templateUrl: 'views/layouts/unl-layout-kiosk.html',
+        data: {
+          requireAuth: false
+        }
+      })
+      //Views
+      .state('unl-layout.main', {
+        url: '/',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/group/new', {
+      .state('unl-layout.new', {
+        url: '/group/new',
         templateUrl: 'views/new.html',
         controller: 'NewCtrl'
       })
-      .when('/group/:groupId', {
+      .state('unl-layout.group', {
+        url: '/group/:groupId',
         templateUrl: 'views/group.html',
         controller: 'GroupCtrl'
       })
-      .when('/group/:groupId/settings', {
+      .state('unl-layout.settings', {
+        url: '/group/:groupId/settings',
         templateUrl: 'views/settings.html',
         controller: 'SettingsCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
       });
+
+      //Default Route
+      $urlRouterProvider.otherwise("/");
+      //End Default Route
+      
+      //Remove # from URLs
       $locationProvider.html5Mode(true);
   })
   .config(function ($httpProvider) {

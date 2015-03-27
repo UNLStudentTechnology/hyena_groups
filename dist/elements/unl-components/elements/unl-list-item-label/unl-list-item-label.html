@@ -50,19 +50,29 @@ Created by Hayden Gascoigne
           active: false,
           user: false,
           image: null,
-          imagePlaceholder: 'HA',
+          imagePlaceholder: 'N/A',
 
           /**
            * If the user attribute is set, will check to see if they have a profile image,
            * if not it will display their first and last initials.
-           * @return {[type]} [description]
            */
           imageChanged: function() {
+            this.changeImagePlaceholder();
+          },
+
+          headingChanged: function() {
+            this.changeImagePlaceholder();
+          },
+
+          changeImagePlaceholder: function() {
             if(!this.image)
             {
               //Split the heading (99% of the time is the user's name)
               var userNames = this.heading.split(" ");
-              this.imagePlaceholder = (userNames[0].charAt(0) + userNames[1].charAt(0)).toUpperCase();
+              if(userNames.length < 2)
+                this.imagePlaceholder = this.heading.substr(0, 2).toUpperCase();
+              else
+                this.imagePlaceholder = (userNames[0].charAt(0) + userNames[1].charAt(0)).toUpperCase();
             }
           }
 

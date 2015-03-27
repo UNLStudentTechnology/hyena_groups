@@ -26,8 +26,12 @@ angular.module('hyenaGroupsApp')
 				APIPATH+'groups?'+tokenString+'&'+apiString, group);
 		},
 		usersAdd: function usersAdd(groupId, users) {
-			return $http.post(
+			return $http.put(
 				APIPATH+'groups/'+groupId+'/users?'+tokenString+'&'+apiString, users);
+		},
+		usersUpdate: function usersUpdate(groupId, userId, userData) {
+			return $http.put(
+				APIPATH+'groups/'+groupId+'users/'+userId+'?'+tokenString+'&'+apiString, userData);
 		},
 		usersRemove: function usersRemove(groupId, users) {
 			return $http.post(

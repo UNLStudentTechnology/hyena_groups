@@ -89,7 +89,7 @@ Fired when the `paper-toast` has completely closed.
 <polymer-element name="unl-toast" attributes="text duration opened responsiveWidth swipeDisabled autoCloseDisabled type" role="status">
 
 <template>
-  <core-overlay id="overlay" autoFocusDisabled autoCloseDisabled="{{autoCloseDisabled}}" opened="{{opened}}" target="{{}}" transition="core-transition-bottom"></core-overlay>
+  <core-overlay id="overlay" autoFocusDisabled autoCloseDisabled="{{autoCloseDisabled}}" opened="{{opened}}" target="{{}}" transition="core-transition-top"></core-overlay>
 
   <div class="toast-container" horizontal layout>
     <div class="toast-text" flex>{{text}}</div>
@@ -186,6 +186,11 @@ Fired when the `paper-toast` has completely closed.
         if (this.opened) {
           this.$.overlay.resizeHandler();
         }
+
+        if(this.narrowMode)
+          this.$.overlay.setAttribute('transition', 'core-transition-bottom');
+        else
+          this.$.overlay.setAttribute('transition', 'core-transition-top');
       },
       
       openedChanged: function() {
