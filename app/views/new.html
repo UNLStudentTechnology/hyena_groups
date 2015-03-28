@@ -6,18 +6,18 @@
 	<form name="newGroupForm" ng-submit="createGroup()">
 		<unl-list-group>
 			<unl-list-item-header>General</unl-list-item-header>
-			<unl-list-item-label heading="Title">
+			<unl-list-item-details heading="Title">
 				<div class="tools">
 					<label for="group-title" hidden></label>
 					<input type="text" name="group-title" ng-model="group.title" placeholder="" required>
 				</div>
-			</unl-list-item-label>
-			<unl-list-item-label heading="Description">
+			</unl-list-item-details>
+			<unl-list-item-details heading="Description">
 				<div class="tools">
 					<label for="group-description" hidden></label>
 					<input type="text" name="group-description" ng-model="group.description" placeholder="" required>
 				</div>
-			</unl-list-item-label>
+			</unl-list-item-details>
 		</unl-list-group>
 		<button type="submit">Create Group</button>
 	</form>
