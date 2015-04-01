@@ -9,8 +9,11 @@
  */
 angular.module('hyenaGroupsApp')
   .controller('GroupCtrl', function ($scope, $rootScope, $stateParams, $http, $filter, Notification, GroupService, UserService, AppService) {
-  	//Initialize tab index var
+  	$scope.searchVisible = true;
+    $scope.doingAddUsers = false;
+    //Initialize tab index var
   	$scope.selectedTab = 0;
+    $scope.selectedRoleTab = 0;
     //Initialize sort variables
   	$scope.sortDirection = false;
   	$scope.sortField = "first_name";
@@ -46,6 +49,10 @@ angular.module('hyenaGroupsApp')
     	$scope.sortDirection = !$scope.sortDirection;
     };
 
+    $scope.toggleSearch = function() {
+      $scope.searchVisible = !$scope.searchVisible;
+    };
+
     $scope.toggleGroupApp = function(app) {
       if($filter('filter')($scope.group_apps, {id:app.id}).length > 0)
         removeGroupApp(app);
@@ -59,6 +66,7 @@ angular.module('hyenaGroupsApp')
     var addGroupApp = function(app) {
       var apps = {apps:[ app.id ]};
       GroupService.appsAdd(groupId, apps).then(function(response) {
+        Notification.show(response.data.message, 'success');
         $scope.group_apps.push(app);
       }, function(error) {
         if(angular.isDefined(error.data.message))
@@ -74,7 +82,16 @@ angular.module('hyenaGroupsApp')
     var removeGroupApp = function(app) {
       var apps = {apps:[ app.id ]};
       GroupService.appsRemove(groupId, apps).then(function(response) {
+        Notification.show(response.data.message, 'success');
         //$scope.group_apps.splice(app);
+
+        for (var i = 0; i < $scope.group_apps.length; i++) {
+          if($scope.group_apps[i].id === app.id) {
+            $scope.group_apps.splice(i, 1);
+            break;
+          }
+        }
+
       }, function(error) {
         if(angular.isDefined(error.data.message))
           Notification.show(error.data.message, 'error');
@@ -87,6 +104,7 @@ angular.module('hyenaGroupsApp')
      * Adds new users to an existing group. Shows a notification based on the response.
      */
     $scope.addUsers = function() {
+      $scope.doingAddUsers = true;
     	var userObject = {users:[]};
     	angular.forEach($scope.usersAddList, function(value, key) {
   			userObject.users.push(value.text);
@@ -97,13 +115,15 @@ angular.module('hyenaGroupsApp')
     		$scope.usersAddList = [];
     		//Loop through new group members and add them to active list
     		angular.forEach(response.data.users_added, function(value, key) {
-				$scope.members.push(value);
-			});
-			//Show notification
-			Notification.hideModal();
+  				$scope.members.push(value);
+  			});
+  			//Show notification
+  			Notification.hideModal();
     		Notification.show(response.data.message, 'success');
+        $scope.doingAddUsers = false;
     	}, function(error) {
     		Notification.show(error.data, 'error');
+        $scope.doingAddUsers = false;
     	});
     };
 

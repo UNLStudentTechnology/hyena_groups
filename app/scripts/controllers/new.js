@@ -25,7 +25,7 @@ angular.module('hyenaGroupsApp')
     		
     		//Redirect and notify
     		$scope.go('group/'+response.data.id);
-    		Notification.show(response.data, 'success');
+        Notification.show('Your group was created successfully!', 'success');
     	}, function(error) {
     		Notification.show(error.data, 'error');
     	});
