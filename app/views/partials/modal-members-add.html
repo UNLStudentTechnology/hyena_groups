@@ -3,7 +3,7 @@
 	<unl-progress indeterminate ng-show="doingAddUsers" class="animate-fade"></unl-progress>
 	<div class="content-container">
 		<form novalidate>
-			<tags-input class="unl-tag-input animate-zoom" placeholder="Add a BB username or NUID" ng-model="usersAddList" on-tag-added="splitTags($tag)">
+			<tags-input class="unl-tag-input animate-zoom" placeholder="Add a BB username or NUID" ng-model="usersAddList" add-on-paste="true" replace-spaces-with-dashes="false" paste-split-pattern=",">
 			</tags-input>
 			<span class="input-help no-margin">Presss tab, enter, or add a comma after each entry.</span>
 		</form>

@@ -50,7 +50,7 @@
 						</unl-empty-content>
 						<unl-list-group ng-show="filtered_members.length > 0">
 							<unl-list-item-header>{{filtered_members.length}} of {{members.length}} Current {{members.length == 1 ? 'Person' : 'People'}}</unl-list-item-header>
-							<unl-list-item-details user user-model="member" class="animate-fade-left" image="{{ member.profile_image }}" heading="{{ member.first_name ? member.first_name +' '+ member.last_name : member }}" details="{{member.uni_year | uni_year}} in {{member.uni_major || member.uni_dept}}" ng-repeat="(key, member) in filtered_members = (members | orderBy:sortField:sortDirection | filter:member_search | filter:{pivot: {role_id:0}})">
+							<unl-list-item-details user user-model="member" class="animate-fade-left" image="{{ member.profile_image }}" heading="{{ member.first_name ? member.first_name +' '+ member.last_name : member }}" details="{{showUserDetails(member)}}" ng-repeat="(key, member) in filtered_members = (members | orderBy:sortField:sortDirection | filter:member_search | filter:{pivot: {role_id:0}})">
 								<div class="tools show-on-hover" ng-hide="member.id === currentUser.id">
 									<unl-tooltip position="bottom" label="Change role">
 										<select name="userPermissionSelect-{{member.uni_auth}}" ng-model="member.pivot.role_id" ng-change="updateUser(member)">
@@ -73,7 +73,7 @@
 						</unl-empty-content>
 						<unl-list-group ng-show="filtered_staff.length > 0">
 							<unl-list-item-header>{{filtered_staff.length}} of {{members.length}} Current {{members.length == 1 ? 'Person' : 'People'}}</unl-list-item-header>
-							<unl-list-item-details user user-model="member" class="animate-fade-left" image="{{ member.profile_image }}" heading="{{ member.first_name ? member.first_name +' '+ member.last_name : member }}" details="{{member.uni_year | uni_year}} in {{member.uni_major || member.uni_dept}}" ng-repeat="(key, member) in filtered_staff = (members | orderBy:sortField:sortDirection | filter:member_search | filter:{pivot: {role_id:51}})">
+							<unl-list-item-details user user-model="member" class="animate-fade-left" image="{{ member.profile_image }}" heading="{{ member.first_name ? member.first_name +' '+ member.last_name : member }}" details="{{showUserDetails(member)}}" ng-repeat="(key, member) in filtered_staff = (members | orderBy:sortField:sortDirection | filter:member_search | filter:{pivot: {role_id:51}})">
 								<div class="tools show-on-hover" ng-hide="member.id === currentUser.id">
 									<unl-tooltip position="bottom" label="Change role">
 										<select name="userPermissionSelect-{{member.uni_auth}}" ng-model="member.pivot.role_id" ng-change="updateUser(member)">
@@ -96,7 +96,7 @@
 						</unl-empty-content>
 						<unl-list-group ng-show="filtered_admins.length > 0">
 							<unl-list-item-header>{{filtered_admins.length}} of {{members.length}} Current {{members.length == 1 ? 'Person' : 'People'}}</unl-list-item-header>
-							<unl-list-item-details user user-model="member" class="animate-fade-left" image="{{ member.profile_image }}" heading="{{ member.first_name ? member.first_name +' '+ member.last_name : member }}" details="{{member.uni_year | uni_year}} in {{member.uni_major || member.uni_dept}}" ng-repeat="(key, member) in filtered_admins = (members | orderBy:sortField:sortDirection | filter:member_search | filter:{pivot: {role_id:41}})">
+							<unl-list-item-details user user-model="member" class="animate-fade-left" image="{{ member.profile_image }}" heading="{{ member.first_name ? member.first_name +' '+ member.last_name : member }}" details="{{showUserDetails(member)}}" ng-repeat="(key, member) in filtered_admins = (members | orderBy:sortField:sortDirection | filter:member_search | filter:{pivot: {role_id:41}})">
 								<div class="tools show-on-hover" ng-hide="member.id === currentUser.id">
 									<unl-tooltip position="bottom" label="Change role">
 										<select name="userPermissionSelect-{{member.uni_auth}}" ng-model="member.pivot.role_id" ng-change="updateUser(member)">

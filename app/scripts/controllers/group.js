@@ -61,6 +61,21 @@ angular.module('hyenaGroupsApp')
     };
 
     /**
+     * Changes the details under each user depending on which sorting filter is used.
+     * @param  object member User from Platform
+     * @return string
+     */
+    $scope.showUserDetails = function(member) {
+      switch ($scope.sortField) {
+        case "pivot.created_at" :
+          return ($filter('amCalendar')(member.pivot.created_at));
+        default :
+          return ($filter('uni_year')(member.uni_year)) +' in '+ (member.uni_major || member.uni_dept);
+      }
+
+    };
+
+    /**
      * Add app(s) to group
      */
     var addGroupApp = function(app) {
